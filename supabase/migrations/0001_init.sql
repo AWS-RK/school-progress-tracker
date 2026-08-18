@@ -83,6 +83,7 @@ returns boolean
 language sql
 security definer
 stable
+set search_path = public
 as $$
   select exists (
     select 1 from team_members
@@ -130,7 +131,7 @@ create policy "team can insert timeline" on timeline_entries
 create policy "team can read team_members" on team_members
   for select using (is_team_member(profile_id));
 create policy "team can insert team_members" on team_members
-  for insert with check (is_team_member(profile_id));
+  for insert with check (is_team_member(profile_id) and user_id is null);
 create policy "team can delete team_members" on team_members
   for delete using (is_team_member(profile_id));
 
@@ -139,11 +140,12 @@ create or replace function claim_team_membership()
 returns trigger
 language plpgsql
 security definer
+set search_path = public
 as $$
 begin
   update team_members
   set user_id = new.id
-  where invited_email = new.email and user_id is null;
+  where lower(invited_email) = lower(new.email) and user_id is null;
   return new;
 end;
 $$;
