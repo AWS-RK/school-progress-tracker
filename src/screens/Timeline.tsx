@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { User as UserIcon, MessageSquare, ClipboardCheck, Paperclip } from 'lucide-react';
 import { PROFILE_ID } from '../App';
 import { fetchDomains } from '../data/domains';
-import { fetchTimeline } from '../data/timeline';
+import { fetchTimeline, getAttachmentSignedUrl } from '../data/timeline';
 import { fmtDateShort, groupByMonth } from '../lib/dates';
 import { attachmentDisplayName } from '../lib/attachments';
 import Tag from '../components/Tag';
@@ -81,7 +81,19 @@ export default function Timeline() {
                 </div>
                 <div style={{ fontSize: 13, lineHeight: 1.4 }}>{e.note}</div>
                 {e.attachmentUrl && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 5, fontSize: 11, color: 'var(--color-accent-700)' }}>
+                  <div
+                    style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 5, fontSize: 11, color: 'var(--color-accent-700)', cursor: 'pointer' }}
+                    onClick={async (evt) => {
+                      evt.stopPropagation();
+                      try {
+                        const url = await getAttachmentSignedUrl(e.attachmentUrl!);
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      } catch {
+                        // signed URL fetch failed; silently ignore for now, matches the app's existing
+                        // lack of toast/notification system for background actions
+                      }
+                    }}
+                  >
                     <Paperclip width={11} height={11} />
                     {attachmentDisplayName(e.attachmentUrl)}
                   </div>

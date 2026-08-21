@@ -4,7 +4,7 @@ import { Share2, User as UserIcon, ChevronRight, BookOpen, Brain, Shield, Messag
 import { PROFILE_ID } from '../App';
 import { fetchDomains, domainPercent, domainLastAssessedAt } from '../data/domains';
 import { fetchGoals } from '../data/goals';
-import { fetchTimeline } from '../data/timeline';
+import { fetchTimeline, getAttachmentSignedUrl } from '../data/timeline';
 import { percentToLevel, goalStatus } from '../lib/levels';
 import { fmtDateShort, monthsElapsed } from '../lib/dates';
 import { attachmentDisplayName } from '../lib/attachments';
@@ -132,7 +132,19 @@ export default function Home() {
               </div>
               <div style={{ fontSize: 13, lineHeight: 1.4 }}>{e.note}</div>
               {e.attachmentUrl && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 5, fontSize: 11, color: 'var(--color-accent-700)' }}>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 5, fontSize: 11, color: 'var(--color-accent-700)', cursor: 'pointer' }}
+                  onClick={async (evt) => {
+                    evt.stopPropagation();
+                    try {
+                      const url = await getAttachmentSignedUrl(e.attachmentUrl!);
+                      window.open(url, '_blank', 'noopener,noreferrer');
+                    } catch {
+                      // signed URL fetch failed; silently ignore for now, matches the app's existing
+                      // lack of toast/notification system for background actions
+                    }
+                  }}
+                >
                   <Paperclip width={11} height={11} />
                   {attachmentDisplayName(e.attachmentUrl)}
                 </div>

@@ -55,6 +55,12 @@ export async function uploadAttachment(profileId: string, file: File): Promise<s
   return path;
 }
 
+export async function getAttachmentSignedUrl(path: string): Promise<string> {
+  const { data, error } = await supabase.storage.from('attachments').createSignedUrl(path, 60 * 60);
+  if (error) throw error;
+  return data.signedUrl;
+}
+
 export async function createTimelineEntry(entry: NewTimelineEntry): Promise<TimelineEntry> {
   let attachmentUrl: string | null = null;
   if (entry.attachmentFile) {
