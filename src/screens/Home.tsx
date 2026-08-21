@@ -7,6 +7,7 @@ import { fetchGoals } from '../data/goals';
 import { fetchTimeline } from '../data/timeline';
 import { percentToLevel, goalStatus } from '../lib/levels';
 import { fmtDateShort, monthsElapsed } from '../lib/dates';
+import { attachmentDisplayName } from '../lib/attachments';
 import ProgressBar from '../components/ProgressBar';
 import Tag from '../components/Tag';
 import type { Domain, Goal, TimelineEntry } from '../lib/types';
@@ -133,7 +134,7 @@ export default function Home() {
               {e.attachmentUrl && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 5, fontSize: 11, color: 'var(--color-accent-700)' }}>
                   <Paperclip width={11} height={11} />
-                  {e.attachmentUrl.split('/').pop()}
+                  {attachmentDisplayName(e.attachmentUrl)}
                 </div>
               )}
               <div style={{ fontSize: 11, color: 'color-mix(in srgb, var(--color-text) 50%, transparent)', marginTop: 4 }}>

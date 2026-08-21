@@ -5,6 +5,7 @@ import { PROFILE_ID } from '../App';
 import { fetchDomains } from '../data/domains';
 import { fetchTimeline } from '../data/timeline';
 import { fmtDateShort, groupByMonth } from '../lib/dates';
+import { attachmentDisplayName } from '../lib/attachments';
 import Tag from '../components/Tag';
 import type { Domain, TimelineEntry } from '../lib/types';
 
@@ -82,7 +83,7 @@ export default function Timeline() {
                 {e.attachmentUrl && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 5, fontSize: 11, color: 'var(--color-accent-700)' }}>
                     <Paperclip width={11} height={11} />
-                    {e.attachmentUrl.split('/').pop()}
+                    {attachmentDisplayName(e.attachmentUrl)}
                   </div>
                 )}
                 <div style={{ fontSize: 11, color: 'color-mix(in srgb, var(--color-text) 50%, transparent)', marginTop: 4 }}>
