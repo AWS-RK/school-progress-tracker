@@ -19,8 +19,10 @@ interface DomainRow {
   skills: SkillRow[];
 }
 
-function latestAssessment(rows: { percent: number; assessed_at: string }[]) {
-  return rows.reduce((a, b) => (a.assessed_at > b.assessed_at ? a : b));
+function latestAssessment(
+  rows: { percent: number; assessed_at: string }[]
+): { percent: number; assessed_at: string } | undefined {
+  return rows.reduce((a, b) => (a.assessed_at > b.assessed_at ? a : b), rows[0]);
 }
 
 export async function fetchDomains(profileId: string): Promise<Domain[]> {
@@ -41,7 +43,7 @@ export async function fetchDomains(profileId: string): Promise<Domain[]> {
     skills: [...d.skills]
       .sort((a, b) => a.sort_order - b.sort_order)
       .map((s) => {
-        const latest = latestAssessment(s.skill_assessments);
+        const latest = latestAssessment(s.skill_assessments) ?? { percent: 0, assessed_at: '1970-01-01' };
         return {
           id: s.id,
           domainId: s.domain_id,
@@ -59,6 +61,7 @@ export function domainPercent(domain: Domain): number {
 }
 
 export function domainLastAssessedAt(domain: Domain): string {
+  if (domain.skills.length === 0) return '1970-01-01';
   return domain.skills.reduce((a, b) => (a.lastAssessedAt > b.lastAssessedAt ? a : b)).lastAssessedAt;
 }
 
