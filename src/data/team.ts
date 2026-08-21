@@ -70,6 +70,13 @@ export async function inviteTeamMember(input: NewTeamMember): Promise<TeamMember
 }
 
 export async function removeTeamMember(id: string): Promise<void> {
-  const { error } = await supabase.from('team_members').delete().eq('id', id);
+  const { data, error } = await supabase
+    .from('team_members')
+    .delete()
+    .eq('id', id)
+    .select('id');
   if (error) throw error;
+  if (!data || data.length === 0) {
+    throw new Error('Team member not found or you do not have permission to remove them.');
+  }
 }
