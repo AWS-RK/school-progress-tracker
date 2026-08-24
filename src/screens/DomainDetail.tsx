@@ -124,9 +124,9 @@ export default function DomainDetail() {
                     try {
                       const url = await getAttachmentSignedUrl(e.attachmentUrl!);
                       window.open(url, '_blank', 'noopener,noreferrer');
-                    } catch {
-                      // signed URL fetch failed; silently ignore for now, matches the app's existing
-                      // lack of toast/notification system for background actions
+                    } catch (err) {
+                      console.error('Failed to open attachment', err);
+                      alert('Could not open this attachment. It may no longer be available.');
                     }
                   }}
                 >
