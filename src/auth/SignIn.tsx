@@ -23,9 +23,9 @@ export default function SignIn() {
 
   return (
     <div className="app-shell" style={{ justifyContent: 'center', padding: 20 }}>
-      <h3 style={{ marginBottom: 4 }}>Tanvi's Progress Tracker</h3>
+      <h3 style={{ marginBottom: 4 }}>School Progress Tracker</h3>
       <p className="text-muted" style={{ marginBottom: 20 }}>
-        Sign in with your email to view Tanvi's progress.
+        Sign in with your email to view progress updates.
       </p>
       {status === 'sent' ? (
         <p>Check your email for a sign-in link.</p>
