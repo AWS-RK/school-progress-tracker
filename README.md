@@ -1,6 +1,6 @@
 # IEP Progress Tracker
 
-Live app: https://tanvi-progress-tracker.vercel.app
+Live app: https://my-school-progress-tracker.vercel.app
 
 ## About
 
