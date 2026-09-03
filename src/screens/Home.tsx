@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Share2, User as UserIcon, ChevronRight, BookOpen, Brain, Shield, MessageSquare, ClipboardCheck, Paperclip } from 'lucide-react';
+import { Share2, User as UserIcon, ChevronRight, BookOpen, Brain, Shield, MessageSquare, ClipboardCheck, Paperclip, Pencil } from 'lucide-react';
 import { PROFILE_ID } from '../App';
 import { fetchDomains, domainPercent, domainLastAssessedAt } from '../data/domains';
 import { fetchGoals } from '../data/goals';
@@ -12,7 +12,13 @@ import ProgressBar from '../components/ProgressBar';
 import Tag from '../components/Tag';
 import type { Domain, Goal, TimelineEntry } from '../lib/types';
 
-const DOMAIN_ICONS: Record<string, typeof BookOpen> = { 'book-open': BookOpen, brain: Brain, shield: Shield };
+const DOMAIN_ICONS: Record<string, typeof BookOpen> = {
+  'book-open': BookOpen,
+  brain: Brain,
+  shield: Shield,
+  'message-square': MessageSquare,
+  pencil: Pencil,
+};
 const SOURCE_ICONS = { parent: UserIcon, teacher: MessageSquare, assessment: ClipboardCheck };
 const SOURCE_LABELS = { parent: 'Parent', teacher: 'Teacher', assessment: 'Assessment' };
 
